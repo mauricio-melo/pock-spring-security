@@ -27,6 +27,23 @@ CREATE TABLE profile(
   UNIQUE (name)
 );
 
+CREATE TABLE role(
+  idt_role  			        BIGINT AUTO_INCREMENT NOT NULL,
+  name       					VARCHAR(255) NOT NULL,
+  PRIMARY KEY role_pk (idt_role),
+  UNIQUE (name)
+);
+
+CREATE TABLE profile_role(
+  idt_profile_role			    BIGINT AUTO_INCREMENT NOT NULL,
+  idt_profile	                BIGINT NOT NULL,
+  idt_role  					BIGINT NOT NULL,
+  PRIMARY KEY profile_role_pk (idt_profile_role),
+  CONSTRAINT fk_pr_profile      FOREIGN KEY (idt_profile) REFERENCES profile (idt_profile),
+  CONSTRAINT fk_pr_role         FOREIGN KEY (idt_role) REFERENCES role (idt_role),
+  UNIQUE (idt_profile, idt_role)
+);
+
 CREATE TABLE customer(
   idt_customer			        BIGINT AUTO_INCREMENT NOT NULL,
   idt_profile	                BIGINT NULL,
@@ -43,21 +60,4 @@ CREATE TABLE customer(
   CONSTRAINT fk_cu_profile      FOREIGN KEY (idt_profile) REFERENCES profile (idt_profile),
   CONSTRAINT fk_cu_company      FOREIGN KEY (idt_company) REFERENCES company (idt_company),
   UNIQUE (username)
-);
-
-CREATE TABLE role(
-  idt_role  			        BIGINT AUTO_INCREMENT NOT NULL,
-  name       					VARCHAR(255) NOT NULL,
-  PRIMARY KEY role_pk (idt_role),
-  UNIQUE (name)
-);
-
-CREATE TABLE profile_role(
-  idt_profile_role			    BIGINT AUTO_INCREMENT NOT NULL,
-  idt_profile	                BIGINT NOT NULL,
-  idt_role  					BIGINT NOT NULL,
-  PRIMARY KEY profile_role_pk (idt_profile_role),
-  CONSTRAINT fk_pr_profile      FOREIGN KEY (idt_profile) REFERENCES profile (idt_profile),
-  CONSTRAINT fk_pr_role         FOREIGN KEY (idt_role) REFERENCES role (idt_role),
-  UNIQUE (idt_profile, idt_role)
 );
