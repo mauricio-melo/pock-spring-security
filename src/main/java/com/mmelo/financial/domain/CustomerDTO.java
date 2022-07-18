@@ -15,4 +15,5 @@ public class CustomerDTO {
     private String username;
     private String password;
     private Boolean enabled;
+    private ProfileDTO profile;
 }

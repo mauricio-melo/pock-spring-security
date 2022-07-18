@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8090
 
 info:
   artifactId: "${project.name}"
@@ -7,7 +7,7 @@ info:
 
 spring:
   application:
-    name: Totonero-Service
+    name: Financial-Service
   datasource:
     url: jdbc:mysql://localhost:3306/financial?createDatabaseIfNotExist=true&useSSL=false&useTimezone=true&serverTimezone=UTC
     username: root
@@ -26,5 +26,4 @@ management:
         include: "*"
 
 jwt:
-  expiration: 898989875
-  secret: QnJlbm9Mb3Blc0VSb2RpbmVp
+  key: ymLTU8rq83j4fmJZj60wh4OrMNuntIj4fmJ

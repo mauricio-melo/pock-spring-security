@@ -1,22 +1,8 @@
-CREATE TABLE contract(
-  idt_contract  			    BIGINT AUTO_INCREMENT NOT NULL,
-  idt_company                   BIGINT NOT NULL,
-  dat_start_contract 	        DATETIME NOT NULL,
-  dat_end_contract 	            DATETIME NOT NULL,
-  dat_creation 	                DATETIME NOT NULL,
-  dat_update 	                DATETIME NULL,
-  is_current                    TINYINT(1) NOT NULL,
-  PRIMARY KEY contract_pk (idt_contract),
-  UNIQUE (idt_company, is_current)
-);
-
 CREATE TABLE company(
   idt_company                   BIGINT AUTO_INCREMENT NOT NULL,
   name       					VARCHAR(255) NOT NULL,
   document       				VARCHAR(255) NOT NULL,
-  dat_creation 	                DATETIME NOT NULL,
-  dat_update 	                DATETIME NULL,
-  PRIMARY KEY contract_pk (idt_company),
+  PRIMARY KEY company_pk (idt_company),
   UNIQUE (document)
 );
 
@@ -46,7 +32,7 @@ CREATE TABLE profile_role(
 
 CREATE TABLE customer(
   idt_customer			        BIGINT AUTO_INCREMENT NOT NULL,
-  idt_profile	                BIGINT NULL,
+  idt_profile	                BIGINT NOT NULL,
   idt_company                   BIGINT NULL,
   name  	                    VARCHAR(255) NOT NULL,
   username 					    VARCHAR(255) NOT NULL,

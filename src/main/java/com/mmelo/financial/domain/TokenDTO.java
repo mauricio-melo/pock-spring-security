@@ -12,9 +12,5 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class TokenDTO {
-    private String type;
     private String token;
-    private String username;
-    private String name;
-    private List<String> roles;
 }

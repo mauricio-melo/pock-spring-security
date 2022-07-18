@@ -1,6 +1,5 @@
 package com.mmelo.financial.persistence.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mmelo.financial.persistence.enumerator.ProfileType;
 import lombok.*;
 
@@ -21,7 +20,7 @@ public class Profile {
     @Column(name = "idt_profile")
     private Long id;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "name", nullable = false)
     @Enumerated(EnumType.STRING)
     private ProfileType name;
 
