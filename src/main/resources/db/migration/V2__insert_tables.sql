@@ -1,3 +1,6 @@
+INSERT INTO company(name, document)
+VALUES ('TECHNOLOGY LTDA', '25345646875');
+
 INSERT INTO role(name)
 VALUES ('ROLE_APPROVE'),
 ('ROLE_REVIEW');
