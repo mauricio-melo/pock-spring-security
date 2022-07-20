@@ -21,15 +21,11 @@ public class CustomerService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-        return findByUsernameIgnoreCase(username)
+        return repository.findByUsernameIgnoreCase(username)
                 .orElseThrow(() -> new BadCredentialsException("Bad credentials"));
     }
 
     public Optional<Customer> findById(final Long id) {
         return repository.findById(id);
-    }
-
-    public Optional<Customer> findByUsernameIgnoreCase(final String userName) {
-        return repository.findByUsernameIgnoreCase(userName);
     }
 }
