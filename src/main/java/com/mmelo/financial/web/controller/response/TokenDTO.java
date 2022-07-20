@@ -1,6 +1,5 @@
-package com.mmelo.financial.domain;
+package com.mmelo.financial.web.controller.response;
 
-import com.mmelo.financial.persistence.enumerator.ProfileType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ProfileDTO {
-    private Long id;
-    private ProfileType name;
+public class TokenDTO {
+    private String token;
 }

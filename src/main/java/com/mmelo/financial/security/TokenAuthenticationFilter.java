@@ -1,10 +1,8 @@
 package com.mmelo.financial.security;
 
-import com.mmelo.financial.persistence.entity.ProfileRole;
-import com.mmelo.financial.persistence.service.ProfileRoleService;
 import com.mmelo.financial.persistence.service.CustomerService;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
@@ -15,44 +13,38 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-	private final TokenService tokenService;
-	private final CustomerService customerService;
-	private final ProfileRoleService profileRoleService;
+    private final TokenService tokenService;
+    private final CustomerService customerService;
 
-	private final ModelMapper modelMapper;
-	
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
-			throws ServletException, IOException {
-		final String tokenFromHeader = getTokenFromHeader(request);
-		boolean tokenValid = tokenService.isTokenValid(tokenFromHeader);
-		if(tokenValid) {
-			this.authenticate(tokenFromHeader);
-		}
-		filterChain.doFilter(request, response);
-	}
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+            throws ServletException, IOException {
+        final String token = getTokenFromHeader(request);
+        boolean tokenValid = tokenService.isTokenValid(token);
+        if (tokenValid) {
+            this.authenticate(token);
+        }
+        filterChain.doFilter(request, response);
+    }
 
-	private void authenticate(String tokenFromHeader) {
-		customerService.findById(tokenService.getCustomerIdByToken(tokenFromHeader))
-				.ifPresent(customerDTO -> SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(customerDTO, null,
-						profileRoleService.findByUsername(customerDTO.getUsername())
-								.stream()
-								.map(customerRoleDTO -> modelMapper.map(customerRoleDTO, ProfileRole.class))
-								.collect(Collectors.toList()))));
-	}
+    private void authenticate(String token) {
+        final Claims claims = tokenService.getTokenDetails(token);
+        customerService.findById(Long.parseLong(claims.getSubject()))
+                .ifPresent(customer -> SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(customer, null,
+                        tokenService.getAuthoritiesByToken(claims))));
+    }
 
-	public String getTokenFromHeader(HttpServletRequest request) {
-		final String token = request.getHeader("Authorization");
-		if(token == null || !token.startsWith("Bearer ")) {
-			return null;
-		}
-		return token.substring(7);
-	}
+    public String getTokenFromHeader(HttpServletRequest request) {
+        final String token = request.getHeader("Authorization");
+        if (token == null || !token.startsWith("Bearer ")) {
+            return null;
+        }
+        return token.substring(7);
+    }
 
 }

@@ -10,7 +10,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class FinancialApplication {
 
 	public static void main(String[] args) {
-		new BCryptPasswordEncoder().encode("123_financial_mef");
 		SpringApplication.run(FinancialApplication.class, args);
 	}
 

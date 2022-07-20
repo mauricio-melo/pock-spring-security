@@ -27,6 +27,6 @@ public class Profile {
     @OneToOne(mappedBy = "profile")
     private Customer customer;
 
-    @OneToMany(mappedBy = "profile")
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "profile")
     private List<ProfileRole> profileRoles;
 }

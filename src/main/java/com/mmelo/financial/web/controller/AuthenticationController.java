@@ -1,6 +1,6 @@
 package com.mmelo.financial.web.controller;
 
-import com.mmelo.financial.domain.TokenDTO;
+import com.mmelo.financial.web.controller.response.TokenDTO;
 import com.mmelo.financial.security.TokenService;
 import com.mmelo.financial.web.controller.request.LoginDTO;
 import lombok.RequiredArgsConstructor;
