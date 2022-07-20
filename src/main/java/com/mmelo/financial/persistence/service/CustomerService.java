@@ -20,7 +20,7 @@ public class CustomerService implements UserDetailsService {
     private final CustomerRepository repository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
         return findByUsernameIgnoreCase(username)
                 .orElseThrow(() -> new BadCredentialsException("Bad credentials"));
     }
