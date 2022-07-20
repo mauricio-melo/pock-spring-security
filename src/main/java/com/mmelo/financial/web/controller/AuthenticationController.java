@@ -1,6 +1,6 @@
 package com.mmelo.financial.web.controller;
 
-import com.mmelo.financial.security.TokenService;
+import com.mmelo.financial.security.JwtUtils;
 import com.mmelo.financial.web.controller.request.LoginDTO;
 import com.mmelo.financial.web.controller.response.TokenDTO;
 import lombok.RequiredArgsConstructor;
@@ -24,13 +24,13 @@ public class AuthenticationController {
 
     private final AuthenticationManager authenticationManager;
 
-    private final TokenService tokenService;
+    private final JwtUtils jwtUtils;
 
     @PostMapping
     public ResponseEntity<TokenDTO> auth(@RequestBody @Validated final LoginDTO loginDTO) {
         final Authentication authentication = authenticationManager
                 .authenticate(new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword()));
-        return ResponseEntity.ok(tokenService.generateToken(authentication));
+        return ResponseEntity.ok(jwtUtils.generateToken(authentication));
     }
 
 }

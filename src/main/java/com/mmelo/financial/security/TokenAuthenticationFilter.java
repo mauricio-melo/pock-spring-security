@@ -18,7 +18,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
+    private final JwtUtils jwtUtils;
     private final CustomerService customerService;
 
     @Override
@@ -26,7 +26,7 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                                     final FilterChain filterChain)
             throws ServletException, IOException {
         final String token = getTokenFromHeader(request);
-        boolean tokenValid = tokenService.isTokenValid(token);
+        boolean tokenValid = jwtUtils.isTokenValid(token);
         if (tokenValid) {
             this.authenticate(token);
         }
@@ -34,11 +34,11 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void authenticate(final String token) {
-        final Claims claims = tokenService.getTokenDetails(token);
+        final Claims claims = jwtUtils.getTokenDetails(token);
         customerService.findById(Long.parseLong(claims.getSubject()))
                 .ifPresent(customer -> SecurityContextHolder.getContext()
                         .setAuthentication(new UsernamePasswordAuthenticationToken(customer, null,
-                                tokenService.getAuthoritiesByToken(claims))));
+                                jwtUtils.getAuthoritiesByToken(claims))));
     }
 
     public String getTokenFromHeader(final HttpServletRequest request) {
