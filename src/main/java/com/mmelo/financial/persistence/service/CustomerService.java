@@ -19,9 +19,6 @@ import java.util.Optional;
 public class CustomerService implements UserDetailsService {
 
     private final CustomerRepository repository;
-    private final ProfileService profileService;
-    private final CompanyService companyService;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final Optional<Customer> customer = findByUsernameIgnoreCase(username);
@@ -29,16 +26,6 @@ public class CustomerService implements UserDetailsService {
             throw new BadCredentialsException("Bad credentials");
         }
         return customer.get();
-    }
-
-    public void save(final String name, final String username, final String profile, final Long companyId) {
-        repository.save(Customer.builder()
-                .username(username)
-                .name(name)
-                .password(new BCryptPasswordEncoder().encode("123_trocar_senha"))
-                .profile(profileService.findByName(profile))
-                .company(companyService.findById(companyId))
-                .build());
     }
 
     public Optional<Customer> findById(final Long id) {
