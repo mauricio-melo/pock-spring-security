@@ -1,8 +1,8 @@
 package com.mmelo.financial.web.controller;
 
-import com.mmelo.financial.web.controller.response.TokenDTO;
 import com.mmelo.financial.security.TokenService;
 import com.mmelo.financial.web.controller.request.LoginDTO;
+import com.mmelo.financial.web.controller.response.TokenDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
