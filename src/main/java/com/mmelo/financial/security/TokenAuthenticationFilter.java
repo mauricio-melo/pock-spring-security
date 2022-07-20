@@ -22,7 +22,8 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
     private final CustomerService customerService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
+    protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
+                                    final FilterChain filterChain)
             throws ServletException, IOException {
         final String token = getTokenFromHeader(request);
         boolean tokenValid = tokenService.isTokenValid(token);
@@ -32,14 +33,15 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private void authenticate(String token) {
+    private void authenticate(final String token) {
         final Claims claims = tokenService.getTokenDetails(token);
         customerService.findById(Long.parseLong(claims.getSubject()))
-                .ifPresent(customer -> SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(customer, null,
-                        tokenService.getAuthoritiesByToken(claims))));
+                .ifPresent(customer -> SecurityContextHolder.getContext()
+                        .setAuthentication(new UsernamePasswordAuthenticationToken(customer, null,
+                                tokenService.getAuthoritiesByToken(claims))));
     }
 
-    public String getTokenFromHeader(HttpServletRequest request) {
+    public String getTokenFromHeader(final HttpServletRequest request) {
         final String token = request.getHeader("Authorization");
         if (token == null || !token.startsWith("Bearer ")) {
             return null;

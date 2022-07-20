@@ -21,11 +21,8 @@ public class CustomerService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        final Optional<Customer> customer = findByUsernameIgnoreCase(username);
-        if (customer.isEmpty()) {
-            throw new BadCredentialsException("Bad credentials");
-        }
-        return customer.get();
+        return findByUsernameIgnoreCase(username)
+                .orElseThrow(() -> new BadCredentialsException("Bad credentials"));
     }
 
     public Optional<Customer> findById(final Long id) {
